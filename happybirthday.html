@@ -129,14 +129,10 @@
         audioAutoPlay()
       }, 100);
     }())
-    document.addEventListener('WeixinJSBridgeReady', audioAutoPlay)
+    document.addEventListener('touchstart', audioAutoPlay)
     function audioAutoPlay() {
       var audio = document.querySelector('audio');
       audio.play()
-      // document.addEventListener("WeixinJSBridgeReady", function () {
-      //   audio.play();
-      // }, false);
-
     }
   </script>
 </body>
