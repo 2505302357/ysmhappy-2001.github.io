@@ -23,6 +23,25 @@
     <audio autoplay="autoplay" loop="loop" preload="auto" src="./images/生日快乐.mp3" autoplay>
     </audio>
     <!--你的眼睛像星星 (女版)--刘志佳-->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            function audioAutoPlay() {
+
+                var audio = document.getElementById('bg-music');
+
+                audio.play();
+
+                document.addEventListener("WeixinJSBridgeReady", function () {
+
+                    audio.play();
+
+                }, false);
+
+            }
+            audioAutoPlay();
+        });
+    </script>
 </body>
 
 </html>
