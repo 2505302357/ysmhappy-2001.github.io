@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>相册</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		html,
+		body {
+			height: 100%;
+		}
+
+		body {
+			overflow: hidden;
+			background: #aa8c8c;
+			display: flex;
+
+			perspective: 1000px;
+			transform-style: preserve-3d;
+			background-repeat: no-repeat;
+			background-size: 100% 100%;
+			background-attachment: fixed;
+		}
+
+		#box {
+			position: relative;
+			display: flex;
+			width: 130px;
+			height: 200px;
+			margin: auto;
+			transform-style: preserve-3d;
+			transform: rotateX(-10deg);
+		}
+
+		#box>div {
+			transform-style: preserve-3d;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			line-height: 200px;
+			font-size: 50px;
+			text-align: center;
+			box-shadow: 0 0 10px #fff;
+			-webkit-box-reflect: below 10px -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, .8) 100%);
+		}
+
+		/*  #box > div:nth-child(1){
+					background: skyblue;
+					transform: translate3d(0,0,300px) rotateY(45deg);
+				}
+				#box > div:nth-child(2){
+					background: pink;
+					transform: rotateY(0deg);
+				}
+				#box > div:nth-child(3){
+					background: purple;
+					transform: translate3d(0,0,300px) rotateY(-45deg);
+				} 
+		*/
+		#box p {
+			position: absolute;
+			left: 0;
+			top: 0;
+			bottom: 0;
+			right: 0;
+			margin: auto;
+			width: 1200px;
+			height: 1200px;
+			background: -webkit-radial-gradient(center center, 600px 600px, rgba(0, 0, 0), rgba(0, 0, 0, 0));
+			border-radius: 50%;
+			transform: rotateX(90deg) translate3d(-600px, 0, -105px);
+		}
+
+		html,
+		body {
+			background-color: pink;
+			height: 100%;
+			width: 100%;
+			font-size: 65.5%;
+			margin: 0;
+			padding: 0;
+		}
+
+		.snow {
+			color: white;
+			animation: rotes 3s infinite linear;
+		}
+
+		@keyframes rotes {
+			100% {
+				transform: rotate3d(1, -1, 1, 720deg);
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<div id="box">
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+		<p></p>
+	</div>
+	<div style="position:absolute;
+ width: 60%;
+top:85%;
+left:20%;
+  text-align: center;">
+		<b style="
+  transform:translateY(-50%);
+  font-family: 'Love Ya Like A Sister', cursive;
+  font-size: 40px;
+  color: #000000;
+  padding: 0 20px;">生日快乐</b>
+		<script>
+			setTimeout(init, 100);
+			function init() {
+				var obox = document.getElementById('box'),
+					aDiv = obox.getElementsByTagName('div');
+
+				for (var i = 0; i < aDiv.length + 1; i++) {
+					aDiv[i].style.background = "url(images/0" + (i + 1) + ".jpg) center/cover";
+					aDiv[i].style.transform = "rotateY(" + (i * 40) + "deg) translate3d(0,0,350px)";
+					aDiv[i].style.transition = "transform 1s " + (aDiv.length - i) * 0.2 + "s";
+				}
+				var sX,
+					sY,
+					nX,
+					nY,
+					desX = 0,
+					desY = 0,
+					tX = 0,
+					tY = 10,
+					index = 0;//滚轮初始值
+				document.onmousedown = function (e) {
+					clearInterval(obox.timer);
+					e = e || window.event;
+					var sX = e.clientX,
+						sY = e.clientY;
+					this.onmousemove = function (e) {
+						e = e || window.event;
+						var nX = e.clientX,
+							nY = e.clientY;
+						// 当前点的坐标和前一点的坐标差值
+						desX = nX - sX;
+						desY = nY - sY;
+						tX += desX * 0.1;
+						tY += desY * 0.1;
+
+						obox.style.transform = "rotateX(" + (-tY) + "deg) rotateY(" + tX + "deg)";
+						sX = nX;
+						sY = nY;
+					}
+					this.onmouseup = function () {
+						this.onmousemove = this.onmouseup = null;
+						obox.timer = setInterval(function () {
+							desX *= 0.95;
+							desY *= 0.95;
+							tX += desX * 0.1;
+							tY += desY * 0.1;
+							obox.style.transform = "rotateX(" + (-tY) + "deg) rotateY(" + tX + "deg)";
+							if (Math.abs(desX) < 0.5 && Math.abs(desY) < 0.5) {
+								clearInterval(obox.timer);
+							}
+						}, 13);
+					}
+					return false;
+				}
+				//滚轮放大缩小
+				mousewheel(document, function (e) {
+					e = e || window.event;
+					var d = e.wheelDelta / 120 || -e.detail / 3;
+					if (d > 0) {
+						index -= 20;
+					} else {
+						index += 30;
+					}
+					(index < (-1050) && (index = (-1050)));
+					document.body.style.perspective = 1000 + index + "px";
+				})
+				function mousewheel(obj, fn) {
+					document.onmousewheel === null ? obj.onmousewheel = fn : addEvent(obj, "DOMMouseScroll", fn)
+				}
+				function addEvent(obj, eName, fn) {
+					obj.attachEvent ? obj.attachEvent("on" + eName, fn) : obj.addEventListener(eName, fn);
+				}
+			}
+		</script>
+		</script>
+		<img src="左.png"
+			style="left:20px;bottom:50%;position:absolute;width:80px;height:80px;cursor: pointer;z-index:1000"
+			class="left" />
+		<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+		<script>
+			var a = $('.left');
+			a.click(function () {
+				window.location.href = 'happybirthday.html';
+			});
+			snow = function () {
+				this.body = document.body;
+				this.millisec = 5;//下一朵雪花生成的速度
+				this.timer;
+				this.winwidth = window.innerWidth;
+				this.winHeight = window.innerHeight;
+				//创建并返回 一个雪花对象
+				this.create = function () {
+					snowborder = document.createElement('div');
+					snow = document.createElement('div');
+					snowborder.appendChild(snow);
+					snowborder.style.position = 'absolute';
+					//雪花的属性
+					snow.classList.add('snow');
+					snow.innerHTML = '&nbsp;&nbsp;';
+					const shuiji = parseInt(Math.random() * 10)
+					console.log(shuiji);
+					switch (shuiji) {
+						case 1:
+							snow.style.background = 'yellow';
+							break;
+						case 2:
+							snow.style.background = 'black'
+							break;
+						case 3:
+							snow.style.background = 'orange'
+							break;
+						case 4:
+							snow.style.background = 'blue'
+							break;
+						case 5:
+							snow.style.background = 'pink'
+							break;
+						case 6:
+							snow.style.background = 'purple'
+							break;
+						case 7:
+							snow.style.background = 'brown'
+							break;
+						case 8:
+							snow.style.background = 'green'
+							break;
+						case 9:
+							snow.style.background = 'gray'
+							break;
+						case 10:
+							snow.style.background = 'skyBlue'
+							break;
+					}
+					// snow.style.background = "red"
+					return snowborder;
+				}
+				//开始下雪效果   var 定义变量为局部，为了指定当前的雪花元素
+				this.play = function () {
+					this.body.style.cssText = `transform-style:preserve-3d;
+			transform:perspective(50rem);`;
+					var that = this; //将this保存在that内，因为 闭包函数内和外部不联系
+					this.timer = setInterval(function () {
+						var snowborder = that.create();
+						//克隆一个雪花
+						var cloneSnow = snowborder.cloneNode(1);
+						/*开始位置*/
+						var startx = (that.winwidth * .95) * Math.random();
+						var starty = (that.winHeight * .95) * Math.random();
+						/*结束位置*/
+						var endx = (that.winwidth * .95) * Math.random();
+						var endy = (that.winHeight * .95) * Math.random();
+						var endz = (that.winHeight * .5) * Math.random();
+						/* 持续时间  这个时间是元素从初始化状态到最终状态所需的过渡时间，也是删除元素的时间 ！！！ */
+						var duration = parseInt(4000 + Math.random() * 4000);
+						var fontSize = 1 + Math.random() * 30;
+						// 开始时透明度
+						var startOpacity = .5 + .3 * Math.random();
+						// 结束时透明度
+						var endOpacity = .1;
+						//设置初始的雪花位置和大小
+						cloneSnow.style.cssText += `
+					transform:translate3d(${startx}px,0,${endz}px);
+					opacity:${startOpacity};
+					transition:all ${duration}ms linear;
+					font-size:${fontSize}px;`;
+
+						/* adding  to body */
+						that.body.appendChild(cloneSnow);
+						//0.1秒后设置一下css，覆盖掉一些位置的，使得位置发送变化
+						setTimeout(function () {
+							cloneSnow.style.cssText += `
+					transform:translate3d(${endx}px,${endy}px,${endz}px);
+					opacity:${endOpacity};
+					`;
+							setTimeout(function () {
+								cloneSnow.remove();
+							}, duration);//刚好是过渡效果结束的时间，把元素删除
+						}, 100);
+					}, this.millisec);
+					return "play";
+				};
+				//停止下雪效果
+				this.stop = function () {
+					clearInterval(this.timer);
+					return 'stop';
+				}
+			}
+			// 实 例 化
+			snowObject = new snow();
+			// snowObject.play(); //开始
+			// snowObject.stop(); //停止
+			function start() {
+				snowObject.play()
+			}
+			function stop() {
+				snowObject.stop()
+			}
+
+			snowObject.play()
+			setTimeout(() => {
+				snowObject.stop()
+			}, 1000);
+		</script>
+</body>
+
+</html>
