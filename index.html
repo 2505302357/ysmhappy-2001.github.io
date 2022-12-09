@@ -19,29 +19,12 @@
 
 <body>
     <iframe src="happybirthday.html" width="100%" height="100%" scrolling="no" marginwidth="0" marginheight="0"
-        frameborder="0"></iframe>
-    <audio autoplay="autoplay" loop="loop" preload="auto" src="./images/生日快乐.mp3" autoplay>
-    </audio>
+        frameborder="0">
+        <button style="z-index: 999;">播放音乐</button>
+    </iframe>
+
     <!--你的眼睛像星星 (女版)--刘志佳-->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
 
-            function audioAutoPlay() {
-
-                var audio = document.getElementById('bg-music');
-
-                audio.play();
-
-                document.addEventListener("WeixinJSBridgeReady", function () {
-
-                    audio.play();
-
-                }, false);
-
-            }
-            audioAutoPlay();
-        });
-    </script>
 </body>
 
 </html>

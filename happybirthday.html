@@ -37,6 +37,8 @@
 </head>
 
 <body>
+
+  <button style="z-index: 999;">播放音乐</button>
   <h1 id="h1"></h1>
   <div class="stars">
     <div class="star"></div>
@@ -90,7 +92,8 @@
     <div class="star"></div>
     <div class="star"></div>
   </div>
-
+  <audio autoplay="autoplay" loop="loop" preload="auto" src="./images/生日快乐.mp3" autoplay>
+  </audio>
   <script>
 
     window.onload = function starttime() {
@@ -122,6 +125,20 @@
     a.click(function () {
       window.location.href = 'pictures.html';
     });
+    (function () {
+      setTimeout(() => {
+        audioAutoPlay()
+      }, 100);
+    }())
+    document.addEventListener('WeixinJSBridgeReady', audioAutoPlay)
+    function audioAutoPlay() {
+      var audio = document.querySelector('audio');
+      audio.play()
+      // document.addEventListener("WeixinJSBridgeReady", function () {
+      //   audio.play();
+      // }, false);
+
+    }
   </script>
 </body>
 
